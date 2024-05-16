@@ -4,6 +4,7 @@ import EditableHoursCell from "./EditableHoursCell"
 import EditableRowModeButtons from "./EditableRowModeButtons"
 import formatCurrency from '../utils/formatCurrency.js';
 import { useState } from 'react'
+import axios from 'axios'
 
 function InvoiceTableRow({ initialInvoiceData, initialIsEditing, onDeleteRow}) {
     const [isEditing, setIsEditing] = useState(initialIsEditing)
@@ -11,7 +12,21 @@ function InvoiceTableRow({ initialInvoiceData, initialIsEditing, onDeleteRow}) {
     const [rate, setRate] = useState(initialInvoiceData.rate)
     const [hours, setHours] = useState(initialInvoiceData.hours)
     const setEditMode = () => setIsEditing(true)
-    const setNormalMode = () => setIsEditing(false)
+    const setNormalMode = async () => {
+        const { data } = await axios.put(`/api/invoice/${initialInvoiceData.id}`, {
+          description,
+          rate,
+          hours,
+        });
+      
+        if (!data.error) {
+          setDescription(data.description);
+          setRate(data.rate);
+          setHours(data.hours);
+        }
+      
+        setIsEditing(false);
+      };
     return <tr>
         <EditableRowModeButtons isEditing={isEditing}
         onEditClick={setEditMode} 

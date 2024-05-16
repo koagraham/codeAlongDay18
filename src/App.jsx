@@ -8,8 +8,8 @@ const TEST_DATA = [
   { id: 3, description: 'Website development', rate: 100, hours: 5 },
 ];
 
-function App() {
-  return <InvoiceTable initialInvoiceList={TEST_DATA}/>
+function App({ initialInvoiceList }) {
+  return <InvoiceTable initialInvoiceList={initialInvoiceList}/>
 }
 
 export default App;
